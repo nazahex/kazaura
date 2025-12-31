@@ -1,15 +1,64 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "https://turborepo.com/schema.json",
+
+  "globalDependencies": [
+    "turbo.json",
+    "package.json",
+    "bun.lockb",
+    "pnpm-lock.yaml",
+    "yarn.lock"
+  ],
+
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "src/**",
+        "package.json",
+        "tsconfig*.json"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        "out/**",
+        "bin/**"
+      ]
     },
+
+    "check": {
+      "dependsOn": [
+        "^check"
+      ],
+      "inputs": [
+        "src/**",
+        "package.json",
+        "tsconfig*.json",
+        "*.config.*",
+        "biome.json",
+        ".dprint.json"
+      ],
+      "outputs": []
+    },
+
+    "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "inputs": [
+        "src/**",
+        "test/**"
+      ],
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+
     "clean": {
       "cache": false
-    },
-    "test": {
-      "dependsOn": ["^build"]
     }
   }
 }
