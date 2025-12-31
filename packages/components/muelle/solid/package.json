@@ -1,0 +1,66 @@
+{
+  "name": "@kazaura/muelle-solid",
+  "version": "0.1.0",
+  "description": "Muelle: Kazaura footer component.",
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://github.com/nazahex/kazaura",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazahex/kazaura.git",
+    "directory": "packages/components/muelle/solid"
+  },
+  "author": "Kazviz <kaz@kazviz.com> (https://kazviz.com)",
+  "bugs": {
+    "url": "https://github.com/nazahex/kazaura/issues"
+  },
+  "keywords": [
+    "muelle",
+    "kazviz",
+    "nazahex",
+    "kazui",
+    "kazaura",
+    "solidjs",
+    "ui",
+    "footer"
+  ],
+
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist/ --format esm --target node --sourcemap && tsc -p tsconfig.json --emitDeclarationOnly",
+    "clean": "rm -rf dist .tsbuildinfo",
+    "test": "bun test"
+  },
+
+  "packageManager": "bun@1.3.1",
+  "dependencies": {},
+  "peerDependencies": {
+    "@lokat/solid": "~0.1.2",
+    "lucide-solid": "^0.553.0",
+    "solid-js": "^1.9.10"
+  },
+
+  "engines": {
+    "bun": ">=1.2.0",
+    "node": ">=18"
+  },
+
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
