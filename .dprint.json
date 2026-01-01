@@ -28,7 +28,7 @@
     "hexCase": "lower",
     "hexColorLength": "short",
     "quotes": "preferDouble",
-    "operatorLineBreak": "before",
+    "operatorLinebreak": "before",
     "blockSelectorLinebreak": "always",
     "omitNumberLeadingZero": true,
     "trailingComma": false,
