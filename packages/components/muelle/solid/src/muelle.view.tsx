@@ -41,7 +41,7 @@ import type { MuelleProps } from "./muelle.types"
  *   socials={[{ name: "GitHub", href: "https://github.com" }]}
  *   sections={[{ title: "Docs", items: [{ label: "Getting Started", href: "/docs" }] }]}
  *   state="ready"
- *   copyright="© 2025 Nazahex"
+ *   socket="© 2025 Nazahex"
  * />
  * ```
  */
@@ -105,7 +105,7 @@ export default function Muelle<L = unknown>(props: MuelleProps<L>): JSX.Element 
           </div>
         </Show>
         <Show when={props.state === "ready" || !props.state}>
-          <div class="copyright">{props.copyright}</div>
+          <div class="socket">{props.socket}</div>
         </Show>
       </div>
     </footer>

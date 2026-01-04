@@ -18,7 +18,7 @@ import type { JSX } from "solid-js"
 /**
  * Represents high-level rendering state of the footer tail.
  *
- * - `ready`: normal content and copyright are shown
+ * - `ready`: normal content and socket are shown
  * - `loading`: skeleton placeholder is shown with `aria-busy="true"`
  * - `error`: error message area is shown with `role="alert"`
  */
@@ -137,6 +137,6 @@ export interface MuelleProps<L = unknown> {
    * @deprecated No longer emitted because sections are always expanded.
    */
   onSectionToggle?: (index: number, nextCollapsed: boolean) => void
-  /** Copyright text rendered in the tail when `state` is `ready`. */
-  copyright?: string
+  /** Copyright and governance text rendered in the tail when `state` is `ready`. */
+  socket?: string | JSX.Element
 }
