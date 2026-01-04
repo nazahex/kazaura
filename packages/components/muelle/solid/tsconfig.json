@@ -2,16 +2,11 @@
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationMap": false,
     "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "jsxImportSource": "solid-js",
-    "skipLibCheck": true,
-    "strict": true
+    "jsxImportSource": "solid-js"
   },
   "include": [
     "src/**/*.ts",
