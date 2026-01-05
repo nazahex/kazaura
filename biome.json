@@ -65,7 +65,7 @@
     },
     "formatter": {
       "enabled": true,
-      "trailingCommas": "none",
+      "trailingCommas": null,
       "expand": "always"
     },
     "linter": {
