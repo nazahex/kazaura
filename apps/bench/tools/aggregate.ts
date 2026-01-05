@@ -9,10 +9,12 @@ import { generateHydrationScript } from "solid-js/web"
 import { Bench } from "tinybench"
 import { writeReport } from "./report.js"
 
-const component = process.argv[2]
+const component = process.env.COMPONENT ?? process.argv[2]
 const perma = process.argv.includes("--perma")
 if (!component) {
-  console.error("Usage: bun tools/aggregate.ts <component> [--perma]")
+  console.error(
+    "Usage: COMPONENT=<name> bun tools/aggregate.ts [--perma] | bun tools/aggregate.ts <component> [--perma]",
+  )
   process.exit(1)
 }
 
@@ -26,7 +28,9 @@ function buildHarness() {
 buildHarness()
 
 // Import SSR harness functions
-const { renderStatic, renderSections } = await import(`../.cache/${component}/harness/ssr.js`)
+const ssrHarness = await import(`../.cache/${component}/harness/ssr.js`)
+const { renderStatic, renderSections } = ssrHarness
+const hasRenderFull = typeof ssrHarness.renderFull === "function"
 // Import DOM hydration harness lazily later (after DOM shim)
 
 // Micro render via tinybench
@@ -40,6 +44,11 @@ micro.add("render 5 sections", () => {
 micro.add("render 20 sections", () => {
   renderSections(20)
 })
+if (hasRenderFull) {
+  micro.add("render full", () => {
+    ssrHarness.renderFull()
+  })
+}
 await micro.run()
 const microSummary = micro.tasks.map((t) => ({
   name: t.name,
@@ -100,7 +109,9 @@ globalThis._$HY = globalThis._$HY || {}
 // biome-ignore lint/security/noGlobalEval: benchmark only
 eval(hydrationJs)
 
-const { hydrateStatic, hydrateSections } = await import(`../.cache/${component}/hydrate/dom.js`)
+const domHarness = await import(`../.cache/${component}/hydrate/dom.js`)
+const { hydrateStatic, hydrateSections } = domHarness
+const hasHydrateFull = typeof domHarness.hydrateFull === "function"
 
 function setupContainer(html: string): HTMLElement {
   const c = document.createElement("div")
@@ -121,6 +132,7 @@ const M = 50
 const hydStatic: number[] = []
 const hyd5: number[] = []
 const hyd20: number[] = []
+const hydFull: number[] = []
 for (let i = 0; i < M; i++) {
   const c = setupContainer(renderStatic())
   hydStatic.push(
@@ -148,6 +160,17 @@ for (let i = 0; i < M; i++) {
   )
   teardownContainer(c)
 }
+if (hasHydrateFull) {
+  for (let i = 0; i < M; i++) {
+    const c = setupContainer(ssrHarness.renderFull?.() ?? renderStatic())
+    hydFull.push(
+      measure(() => {
+        domHarness.hydrateFull(c)
+      }),
+    )
+    teardownContainer(c)
+  }
+}
 
 function summarize(arr: number[]) {
   const total = arr.reduce((a, b) => a + b, 0)
@@ -159,6 +182,7 @@ const hydrateRuntime = {
   static: summarize(hydStatic),
   s5: summarize(hyd5),
   s20: summarize(hyd20),
+  ...(hasHydrateFull ? { full: summarize(hydFull) } : {}),
 }
 
 // Memory SSR
@@ -179,6 +203,7 @@ const ssrCases = [
   { name: "sections:500", run: () => renderSections(500) },
   { name: "sections:1000", run: () => renderSections(1000) },
 ]
+if (hasRenderFull) ssrCases.push({ name: "full", run: () => ssrHarness.renderFull() })
 const memorySsr = [] as Array<{
   name: string
   bytes: number
@@ -209,6 +234,12 @@ const hydCases = [
     run: (c: HTMLElement) => hydrateSections(c, 20),
   },
 ]
+if (hasHydrateFull)
+  hydCases.push({
+    name: "full",
+    html: () => ssrHarness.renderFull?.() ?? renderStatic(),
+    run: (c: HTMLElement) => domHarness.hydrateFull(c),
+  })
 const memoryHyd = [] as Array<{
   name: string
   bytes: number
