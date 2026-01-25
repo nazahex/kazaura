@@ -1,14 +1,13 @@
 /** @jsxImportSource solid-js */
 
-import type { SolidLokatInstance } from "@lokat/solid"
 import { type JSX, Show } from "solid-js"
 import type { HarborBrand } from "./harbor.types"
 
-export interface HarborBannerProps<L = unknown> {
+export interface HarborBannerProps {
   /** Branding configuration for the banner panel. */
   brand: HarborBrand
-  /** Optional Lokat instance to resolve reactive brand text when `brand.title` is omitted. */
-  lokat?: SolidLokatInstance<L>
+  /** Optional subtitle for the banner. */
+  subtitle?: string
 }
 
 /**
@@ -17,14 +16,14 @@ export interface HarborBannerProps<L = unknown> {
  * @remarks
  * This panel is intended to be used inside `HarborShell` as the first child.
  */
-export default function HarborBanner<L = unknown>(props: HarborBannerProps<L>): JSX.Element {
-  const title = props.lokat?.t("brand") ?? props.brand?.title ?? ""
-  const subtitle = props.lokat?.t("subtitle") ?? props.brand?.subtitle
+export default function HarborBanner(props: HarborBannerProps): JSX.Element {
+  const title = props.brand.title
+  const subtitle = props.brand.subtitle
   return (
     <div id="banner-panel">
-      <a class="land" href={props.brand?.href ?? "/"} aria-label={title}>
+      <a href={props.brand?.href ?? "/"} aria-label={title}>
         {props.brand?.logoSlot?.()}
-        <div class="brand">
+        <div>
           <b>{title}</b>
           <Show when={subtitle}>
             <span>{subtitle}</span>
