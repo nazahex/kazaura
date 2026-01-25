@@ -16,7 +16,7 @@ export interface HarborAuthButtonsProps {
  */
 export default function HarborAuthButtons(props: HarborAuthButtonsProps): JSX.Element {
   return (
-    <>
+    <div id="auth-menu">
       <Show when={props.authLinks?.signup}>
         {(s) => (
           <a href={s().href} class="signup">
@@ -31,6 +31,6 @@ export default function HarborAuthButtons(props: HarborAuthButtonsProps): JSX.El
           </a>
         )}
       </Show>
-    </>
+    </div>
   )
 }
