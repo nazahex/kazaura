@@ -15,7 +15,6 @@
  * - Optional panels (`HarborBasinPanel`, `HarborUtilPanel`, `HarborAuthButtons`, `HarborHatchPanel`)
  *   can be composed via `HarborShell` in the required order: banner → basin → util → auth → hatch.
  */
-import type { SolidLokatInstance } from "@lokat/solid"
 import type { JSX } from "solid-js"
 
 /**
@@ -35,8 +34,8 @@ export type HarborMenu = null | "basin" | "cross" | "hatch"
  * @public
  */
 export interface HarborBrand {
-  /** Brand title text; falls back to `lokat.t('brand')` when omitted. */
-  title?: string
+  /** Brand title text provided by the host app. */
+  title: string
   /** Optional subtitle text shown below the title. */
   subtitle?: string
   /** Optional link destination for brand anchor. */
@@ -91,6 +90,10 @@ export interface HarborAmbience {
   onLight: () => void
   /** Switch to dark mode. */
   onDark: () => void
+  /** Label for light mode button. */
+  labelLight: string
+  /** Label for dark mode button. */
+  labelDark: string
   /** Optional light-mode icon slot. */
   lightIconSlot?: () => JSX.Element
   /** Optional dark-mode icon slot. */
@@ -141,59 +144,83 @@ export interface HarborAuthLinks {
  * @typeParam L - Locale dictionary type for the injected Lokat instance.
  * @public
  *
- * @example
- * Basic banner-only usage
+ * Consumer example (banner-only):
  * ```tsx
- * import { Harbor } from "@kazaura/harbor-solid"
- * import { createSolidLokat } from "@lokat/solid"
+ * import Harbor from "@kazaura/harbor-solid"
  *
- * const loc = createSolidLokat({ initialLocale: "en", initialDict: { brand: "Kazaura" } })
- *
- * <Harbor lokat={loc} brand={{ title: loc.t("brand") }} />
+ * <Harbor brand={{ title: "MyApp" }} />
  * ```
  *
- * @example
- * Composed with `HarborShell` and optional panels
- * ```tsx
- * import {
- *   HarborShell, HarborBanner, HarborBasinPanel, HarborUtilPanel,
- *   HarborAuthButtons, HarborHatchPanel,
- * } from "@kazaura/harbor-solid"
- *
- * <HarborShell
- *   banner={<HarborBanner brand={{ title: "Kazaura" }} />}
- *   basin={<HarborBasinPanel nav={[{ label: "Docs", href: "/docs" }]} />}
- *   util={
- *     <HarborUtilPanel>
- *       {utilButtons}
- *     </HarborUtilPanel>
- *   }
- *   auth={<HarborAuthButtons authLinks={{ login: { label: "Login", href: "/login" } }} />}
- *   hatch={<HarborHatchPanel user={{ isLoggedIn: true }} />}
- * />
- * ```
+ * The primary `HarborProps` is expanded inline to provide full IDE
+ * autocompletion. Named interfaces above (e.g., `HarborBrand`) remain
+ * available for reuse and extension.
  */
-export interface HarborProps<L = unknown> {
-  /** App-owned Lokat instance for translation. */
-  lokat: SolidLokatInstance<L>
+export interface HarborProps {
   /** Optional extra class name(s) applied to the root `#harbor`. */
   className?: string
-  /** Branding block configuration. */
-  brand: HarborBrand
-  /** Optional basin items (used by `HarborBasinPanel`). */
-  nav?: HarborNavItem[]
-  /** Optional language switch contract (used by `HarborLangSwitchButton`). */
-  langSwitch?: HarborLangSwitch
-  /** Optional ambience contract (used by `HarborThemeSwitch`). */
-  ambience?: HarborAmbience
-  /** Optional user state for hatch/dashboard. */
-  user?: HarborUser
-  /** Optional auth links for unauthenticated state. */
-  authLinks?: HarborAuthLinks
+
+  /** Branding block (inline shape). */
+  brand: {
+    title: string
+    subtitle?: string
+    href?: string
+    logoSlot?: () => JSX.Element
+  }
+
+  /** Basin navigation items (inline shape). */
+  nav?: ReadonlyArray<{ label: string; href: string; iconSlot?: () => JSX.Element }>
+
+  /** Language switch (inline shape). */
+  langSwitch?: { label: string; onClick: () => void; iconSlot?: () => JSX.Element }
+
+  /** Theme ambience contract (inline shape). */
+  ambience?: {
+    onLight: () => void
+    onDark: () => void
+    labelLight: string
+    labelDark: string
+    lightIconSlot?: () => JSX.Element
+    darkIconSlot?: () => JSX.Element
+  }
+
+  /** User state for hatch/dashboard (inline). */
+  user?: {
+    isLoggedIn: boolean
+    isPremium?: boolean
+    avatarSlot?: () => JSX.Element
+    dashboardHref?: string
+    onOpenHatch?: () => void
+  }
+
+  /** Auth links for unauthenticated state (inline). */
+  authLinks?: { signup?: { label: string; href: string }; login?: { label: string; href: string } }
+
   /** Optional high-level state. */
   state?: "loading" | "ready" | "error"
+
   /** Controlled active menu (used by basin/cross/hatch panels). */
-  activeMenu?: HarborMenu
+  activeHarborMenu?: HarborMenu
+
   /** Callback when active menu changes. */
-  onActiveMenuChange?: (next: HarborMenu) => void
+  onActiveHarborMenuChange?: (next: HarborMenu) => void
+}
+
+export interface HarborBasinProps<M> {
+  /** Navigation items to render as main menu links. */
+  nav?: HarborNavItem[]
+  /** Controlled active menu key (optional). */
+  activeHarborMenu?: HarborMenu
+  /** Callback when active menu changes (optional). */
+  onActiveHarborMenuChange?: (next: HarborMenu) => void
+  /** Required props for the basin toggle button. */
+  toggle: HarborBasinToggle<M>[]
+}
+
+/** Required props for the basin toggle button. */
+export interface HarborBasinToggle<M> {
+  /** Required label for the basin toggle button. */
+  label: string
+  basinMenu: M | null
+  onToggle?: () => void
+  chevronIconSlot?: () => JSX.Element
 }
