@@ -25,9 +25,7 @@ export default function HarborShell(props: HarborShellProps): JSX.Element {
   const c = children(() => props.children)
   return (
     <header id="harbor" class={props.className}>
-      <nav id="naval">
-        <div class="ship">{c()}</div>
-      </nav>
+      <div class="ship">{c()}</div>
     </header>
   )
 }

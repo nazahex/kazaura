@@ -51,7 +51,7 @@ export interface HarborBrand {
  */
 export interface HarborNavItem {
   /** Visible label and aria-label. */
-  label: string
+  label?: string
   /** Destination href. */
   href: string
   /** Optional icon slot. */
@@ -212,15 +212,13 @@ export interface HarborBasinProps<M> {
   activeHarborMenu?: HarborMenu
   /** Callback when active menu changes (optional). */
   onActiveHarborMenuChange?: (next: HarborMenu) => void
-  /** Required props for the basin toggle button. */
-  toggle: HarborBasinToggle<M>[]
-}
-
-/** Required props for the basin toggle button. */
-export interface HarborBasinToggle<M> {
-  /** Required label for the basin toggle button. */
-  label: string
-  basinMenu: M | null
-  onToggle?: () => void
-  chevronIconSlot?: () => JSX.Element
+  /** Props for the basin toggle button. */
+  toggle?: {
+    /** Required label for the basin toggle button. */
+    label: string
+    basinMenu: M | null
+    onToggle?: () => void
+    iconSlot?: () => JSX.Element | HTMLElement
+    chevronIconSlot?: () => JSX.Element | HTMLElement
+  }[]
 }

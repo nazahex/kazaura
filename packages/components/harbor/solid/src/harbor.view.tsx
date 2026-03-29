@@ -18,10 +18,10 @@ import type { HarborProps } from "./harbor.types"
  * <Harbor lokat={loc} brand={{ title: loc.t("brand") }} />
  * ```
  */
-export default function Harbor<L = unknown>(props: HarborProps<L>): JSX.Element {
+export default function Harbor(props: HarborProps): JSX.Element {
   return (
     <HarborShell {...(props.className ? { className: props.className } : {})}>
-      <HarborBanner brand={props.brand} lokat={props.lokat} />
+      <HarborBanner brand={props.brand} />
     </HarborShell>
   )
 }

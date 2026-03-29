@@ -1,14 +1,11 @@
 /** @jsxImportSource solid-js */
 
-import type { SolidLokatInstance } from "@lokat/solid"
 import type { JSX } from "solid-js"
 import type { HarborAmbience } from "./harbor.types"
 
-export interface HarborThemeSwitchProps<L = unknown> {
+export interface HarborThemeSwitchProps {
   /** Ambience contract providing the theme toggle handlers and optional icons. */
   ambience: HarborAmbience
-  /** Optional Lokat to resolve reactive labels for dark/light mode. */
-  lokat?: SolidLokatInstance<L>
 }
 
 /**
@@ -18,24 +15,22 @@ export interface HarborThemeSwitchProps<L = unknown> {
  * Place inside `HarborUtilPanel`. The UI kit does not read/write theme state;
  * it only invokes `onDark`/`onLight`.
  */
-export default function HarborThemeSwitch<L = unknown>(
-  props: HarborThemeSwitchProps<L>,
-): JSX.Element {
+export default function HarborThemeSwitch(props: HarborThemeSwitchProps): JSX.Element {
   return (
     <>
       <button
         type="button"
         class="fn-ambience swan"
-        title={props.lokat?.t("darkMode") ?? "dark-mode"}
-        aria-label={props.lokat?.t("darkMode") ?? "dark-mode"}
+        title={props.ambience.labelDark}
+        aria-label={props.ambience.labelDark}
         onClick={props.ambience.onDark}>
         {props.ambience.darkIconSlot?.()}
       </button>
       <button
         type="button"
         class="fn-ambience wolf"
-        title={props.lokat?.t("lightMode") ?? "light-mode"}
-        aria-label={props.lokat?.t("lightMode") ?? "light-mode"}
+        title={props.ambience.labelLight}
+        aria-label={props.ambience.labelLight}
         onClick={props.ambience.onLight}>
         {props.ambience.lightIconSlot?.()}
       </button>

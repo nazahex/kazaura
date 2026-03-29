@@ -19,37 +19,42 @@ export default function HarborBasinPanel<M>(props: HarborBasinProps<M>): JSX.Ele
   return (
     <Show when={props.nav && props.nav.length > 0}>
       <div id="basin-panel">
-        <div class="links">
-          <For each={props.nav ?? []}>
-            {(item) => (
-              <a href={item.href} class="nav-item" aria-label={item.label}>
-                {item.iconSlot?.()}
-              </a>
-            )}
-          </For>
-        </div>
-        <div class="toggles">
-          <For each={props.toggle}>
-            {(toggle) => (
-              <button
-                type="button"
-                onClick={() => {
-                  toggle.onToggle?.()
-                  openBasin()
-                  setBasinMenu(() =>
-                    activeBasinMenu() === toggle.basinMenu ? null : toggle.basinMenu,
-                  )
-                }}
-                classList={{ active: activeBasinMenu() === toggle.basinMenu }}
-                aria-expanded={activeBasinMenu() === toggle.basinMenu}
-                aria-controls="basin"
-                aria-label={toggle.label}>
-                <span>{toggle.label}</span>
-                {toggle.chevronIconSlot?.()}
-              </button>
-            )}
-          </For>
-        </div>
+        <Show when={props.nav && props.nav.length > 0}>
+          <div class="links">
+            <For each={props.nav ?? []}>
+              {(item) => (
+                <a href={item.href} class="nav-item" aria-label={item.label}>
+                  {item.iconSlot?.()}
+                </a>
+              )}
+            </For>
+          </div>
+        </Show>
+        <Show when={props.toggle && props.toggle.length > 0}>
+          <div class="toggles">
+            <For each={props.toggle}>
+              {(toggle) => (
+                <button
+                  type="button"
+                  onClick={() => {
+                    toggle.onToggle?.()
+                    openBasin()
+                    setBasinMenu(() =>
+                      activeBasinMenu() === toggle.basinMenu ? null : toggle.basinMenu,
+                    )
+                  }}
+                  classList={{ active: activeBasinMenu() === toggle.basinMenu }}
+                  aria-expanded={activeBasinMenu() === toggle.basinMenu}
+                  aria-controls="basin"
+                  aria-label={toggle.label}>
+                  {toggle.iconSlot?.()}
+                  <span>{toggle.label}</span>
+                  {toggle.chevronIconSlot?.()}
+                </button>
+              )}
+            </For>
+          </div>
+        </Show>
       </div>
     </Show>
   )
