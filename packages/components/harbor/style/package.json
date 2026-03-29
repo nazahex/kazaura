@@ -1,0 +1,52 @@
+{
+  "name": "@kazaura/harbor-style",
+  "version": "0.1.0",
+  "description": "Harbor: Kazaura header component styles.",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/nazahex/kazaura",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazahex/kazaura.git",
+    "directory": "packages/components/harbor/style"
+  },
+  "author": "Kazviz <kaz@kazviz.com> (https://kazviz.com)",
+  "bugs": {
+    "url": "https://github.com/nazahex/kazaura/issues"
+  },
+  "keywords": [
+    "harbor",
+    "kazui",
+    "kazaura",
+    "style",
+    "css",
+    "header"
+  ],
+
+  "scripts": {
+    "build": "sass --style=compressed src/harbor.style.scss:dist/index.css",
+    "clean": "rm -rf dist",
+    "dev": "sass --watch src/harbor.style.scss:dist/index.css"
+  },
+
+  "packageManager": "bun@1.3.1",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {},
+
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.css",
+  "exports": {
+    ".": {
+      "default": "./dist/index.css"
+    }
+  },
+  "sideEffects": false,
+
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
