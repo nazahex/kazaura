@@ -7,5 +7,7 @@
  * Consumers should import from this module for IntelliSense-rich types
  * and the main component.
  */
+
+export * from "./muelle.style"
 export * from "./muelle.types"
 export { default } from "./muelle.view"
