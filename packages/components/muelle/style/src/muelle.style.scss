@@ -1,8 +1,31 @@
 #muelle {
+  /* Alias tokens (top-level, organ-scoped) */
+  --muelle-zindex: 5;
+  --muelle-font-size: 1em;
+  --muelle-max-width: 1200px;
+  --muelle-ship-margin: 0 auto;
+  --muelle-padding: 3rem 0;
+  --muelle-head-padding: 1rem 0;
+  --muelle-h2-fs: 2.25rem;
+  --muelle-banner-padding: 0 3rem;
+  --muelle-slogan-padding: 1rem 0;
+  --muelle-socials-padding: 1.5rem 0;
+  --muelle-grid-gap: 1rem;
+  --muelle-grid-min: 10rem;
+  --muelle-sections-padding: 0 2rem;
+  --muelle-section-padding: 0 1rem;
+  --muelle-social-icon-size: 1.5rem;
+  --muelle-icon-fill: var(--cl-0);
+  --muelle-cl-main: var(--cl-main);
+  --muelle-cl-text: var(--cl-3);
+  --muelle-cl-link: var(--cl-link);
+  --muelle-cl-link-hov: var(--cl-link-hov);
+  --muelle-cl-border: var(--cl-border, #8883);
+
   position: relative;
-  z-index: var(--muelle-zindex, 5);
-  border-top: var(--muelle-border-top);
-  font-size: var(--muelle-font-size, 1em);
+  z-index: var(--muelle-zindex);
+  border-top: 1px solid var(--muelle-cl-border);
+  font-size: var(--muelle-font-size);
 
   ul {
     margin: 0;
@@ -16,43 +39,43 @@
 
   h2 {
     margin: 0;
-    padding: var(--muelle-h2-padding, 1rem 0);
-    color: var(--muelle-h2-cl, --cl-main);
-    font-size: var(--muelle-h2-fs, 2.25rem);
+    padding: var(--muelle-head-padding);
+    color: var(--muelle-cl-main);
+    font-size: var(--muelle-h2-fs);
   }
 
   h3 {
     margin: 0;
-    padding: var(--muelle-h3-padding, 1rem 0);
+    padding: var(--muelle-head-padding);
   }
 
   .ship {
     display: flex;
     flex-wrap: wrap;
-    margin: var(--ship-margin, 0 auto);
-    padding: var(--muelle-padding, 3rem 0);
+    margin: var(--muelle-ship-margin);
+    padding: var(--muelle-padding);
     width: 100%;
-    max-width: var(--ship-max-width, 1200px);
+    max-width: var(--muelle-max-width);
   }
 
   .banner {
     flex: 2 1 200px;
-    padding: var(--muelle-banner-padding, 0 3rem);
+    padding: var(--muelle-banner-padding);
 
     .slogan {
-      padding: var(--muelle-sl-padding, 1rem 0);
+      padding: var(--muelle-slogan-padding);
       width: 100%;
     }
   }
 
   .socials {
     display: flex;
-    padding: var(--muelle-so-padding, 1.5rem 0);
+    padding: var(--muelle-socials-padding);
 
     svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      fill: var(--cl-0);
+      width: var(--muelle-social-icon-size);
+      height: var(--muelle-social-icon-size);
+      fill: var(--muelle-icon-fill);
     }
   }
 
@@ -61,34 +84,34 @@
     grid-template-columns:
       repeat(
         auto-fit,
-        minmax(var(--muelle-sc-minmax, 10rem), 1fr)
+        minmax(var(--muelle-grid-min), 1fr)
       );
     flex: 5 1 350px;
-    gap: var(--muelle-sc-gap, 1rem);
-    padding: var(--muelle-sc-padding, 0 2rem);
+    gap: var(--muelle-grid-gap);
+    padding: var(--muelle-sections-padding);
 
     a {
       &:link,
       &:visited {
-        color: var(--muelle-sc-a-cl, --cl-link);
+        color: var(--muelle-sc-a-cl, var(--cl-link));
       }
 
       &:hover {
-        color: var(--muelle-sc-a-hov-cl, --cl-link-hov);
+        color: var(--muelle-sc-a-hov-cl, var(--cl-link-hov));
         text-decoration: underline;
       }
     }
 
     .section {
-      padding: var(--muelle-section-padding, 0 1rem);
+      padding: var(--muelle-section-padding);
     }
   }
 
   .socket {
-    border-top: var(--muelle-sk-border, 1px solid #8883);
-    padding: var(--muelle-sk-padding, 2rem 0);
-    color: var(--muelle-sk-color, var(--cl-3));
-    font-size: var(--muelle-sk-font-size, .9rem);
-    text-align: var(--muelle-sk-align, center);
+    border-top: 1px solid var(--muelle-cl-border);
+    padding: var(--muelle-socket-padding, 2rem 0);
+    color: var(--muelle-cl-text);
+    font-size: var(--muelle-socket-font-size, .9rem);
+    text-align: var(--muelle-socket-align, center);
   }
 }
