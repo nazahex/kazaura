@@ -1,0 +1,78 @@
+{
+  "name": "@kazaura/nebula-solid",
+  "version": "0.1.0",
+  "description": "Nebula: Kazaura void component.",
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://github.com/nazahex/kazaura",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazahex/kazaura.git",
+    "directory": "packages/components/nebula/solid"
+  },
+  "author": "Kazviz <kaz@kazviz.com> (https://kazviz.com)",
+  "bugs": {
+    "url": "https://github.com/nazahex/kazaura/issues"
+  },
+  "keywords": [
+    "nebula",
+    "kazui",
+    "kazaura",
+    "solidjs",
+    "ui",
+    "void"
+  ],
+
+  "scripts": {
+    "build": "bun run clean && bun run build:plumet && bun run build:plumet:type && bun run build:style",
+    "build:plumet": "bun build src/nebula.style.ts --outdir dist --entry-naming plumet.js --format esm --target node",
+    "build:plumet:type": "tsc src/nebula.style.ts --declaration --emitDeclarationOnly --module ESNext --target ESNext --moduleResolution Bundler --skipLibCheck --outDir dist && mv dist/nebula.style.d.ts dist/plumet.d.ts",
+    "build:style": "sass --style=compressed ../style/src/nebula.style.scss:./dist/index.css",
+    "clean": "rm -rf dist .tsbuildinfo",
+    "test": "bun test"
+  },
+
+  "packageManager": "bun@1.3.1",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "plumet": "^0.2.0",
+    "solid-js": "^1.9.10"
+  },
+
+  "engines": {
+    "bun": ">=1.2.0",
+    "node": ">=18"
+  },
+
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./plumet": {
+      "types": "./dist/plumet.d.ts",
+      "import": "./dist/plumet.js",
+      "default": "./dist/plumet.js"
+    },
+    "./css": {
+      "import": "./dist/index.css",
+      "default": "./dist/index.css"
+    }
+  },
+  "sideEffects": false,
+
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

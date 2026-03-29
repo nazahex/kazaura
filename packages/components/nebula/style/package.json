@@ -1,0 +1,52 @@
+{
+  "name": "@kazaura/nebula-style",
+  "version": "0.1.0",
+  "description": "Nebula: Kazaura void component styles.",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/nazahex/kazaura",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazahex/kazaura.git",
+    "directory": "packages/components/nebula/style"
+  },
+  "author": "Kazviz <kaz@kazviz.com> (https://kazviz.com)",
+  "bugs": {
+    "url": "https://github.com/nazahex/kazaura/issues"
+  },
+  "keywords": [
+    "nebula",
+    "kazui",
+    "kazaura",
+    "style",
+    "css",
+    "void"
+  ],
+
+  "scripts": {
+    "build": "sass --style=compressed src/nebula.style.scss:dist/index.css",
+    "clean": "rm -rf dist",
+    "dev": "sass --watch src/nebula.style.scss:dist/index.css"
+  },
+
+  "packageManager": "bun@1.3.1",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {},
+
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.css",
+  "exports": {
+    ".": {
+      "default": "./dist/index.css"
+    }
+  },
+  "sideEffects": false,
+
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
