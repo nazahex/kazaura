@@ -107,8 +107,8 @@ package-lock.json
 npm-shrinkwrap.json
 yarn.lock
 pnpm-lock.yaml
-bun.lock
-bun.lockb
+# bun.lock
+# bun.lockb
 shrinkwrap.yaml
 
 # === TEST / BENCH / PROFILING ===
