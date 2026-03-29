@@ -27,7 +27,7 @@
     "build": "bun run clean && bun run build:lib && bun run build:plumet && bun run build:plumet:type && bun run build:style",
     "build:lib": "echo 'Build step is skipped for main UI library.'",
     "build:plumet": "bun build src/muelle.style.ts --outdir dist --entry-naming plumet.js --format esm --target node",
-    "build:plumet:type": "dts-bundle-generator --no-check -o dist/plumet.d.ts src/muelle.style.ts",
+    "build:plumet:type": "tsc src/muelle.style.ts --declaration --emitDeclarationOnly --module ESNext --target ESNext --moduleResolution Bundler --skipLibCheck --outDir dist && mv dist/muelle.style.d.ts dist/plumet.d.ts",
     "build:style": "sass --style=compressed ../style/src/muelle.style.scss:./dist/index.css",
     "clean": "rm -rf dist .tsbuildinfo",
     "test": "bun test"
