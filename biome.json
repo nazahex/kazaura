@@ -82,5 +82,17 @@
     "assist": {
       "enabled": false
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/*.style.ts"
+      ],
+      "javascript": {
+        "formatter": {
+          "expand": "always"
+        }
+      }
+    }
+  ]
 }
