@@ -9,6 +9,15 @@ export interface HarborStyleToken {
   HarborBg?: CSS.Property.BackgroundColor
 
   /**
+   * Root position for the harbor (`#harbor`).
+   * SCSS default: `relative`.
+   *
+   */
+  HarborPosition?: CSS.Property.Position
+  HarborTop?: CSS.Property.Top
+  HarborLeft?: CSS.Property.Left
+
+  /**
    * Root height for the harbor bar.
    * SCSS default: `70px` (from `$harbor-height` fallback in SCSS).
    */
@@ -18,6 +27,18 @@ export interface HarborStyleToken {
    * z-index applied to `#naval`. SCSS default: `null`.
    */
   HarborZIndex?: CSS.Property.ZIndex
+
+  HarborTransition?: CSS.Property.Transition
+
+  HarborActiveBorder?: CSS.Property.Border
+  HarborActiveBorderRadius?: CSS.Property.BorderRadius
+  HarborActiveBackground?: CSS.Property.Background
+
+  /**
+   * Color used for hover states on links and buttons.
+   * SCSS default: `var(--cl-0)`.
+   */
+  HarborClHover?: CSS.Property.Color
 
   /**
    * Grid template columns for `.ship` inside `#naval`.
@@ -53,10 +74,18 @@ export interface HarborStyleToken {
    */
   HarborBannerSvgFill?: CSS.Property.Color
 
+  HarborBannerBLetterSpacing?: CSS.Property.LetterSpacing
+  HarborBannerSpanLetterSpacing?: CSS.Property.LetterSpacing
+
   /**
    * Color used for basin links and buttons. SCSS default: `var(--cl-4)`.
    */
   HarborBasinCl?: CSS.Property.Color
+
+  /**
+   * Letter-spacing for basin links and buttons.
+   */
+  HarborBasinLetterSpacing?: CSS.Property.LetterSpacing
 
   /**
    * Top-level socket padding (not used by banner/basin; present for parity).
@@ -133,6 +162,8 @@ export interface HarborStyleToken {
    */
   HarborChevronHeight?: CSS.Property.Height
 
+  HarborBasinActiveBackground?: CSS.Property.Background
+
   /**
    * Border for the hatch panel root. SCSS default: `1px solid #0000` (transparent).
    */
@@ -180,33 +211,31 @@ export default function createHarborPlumet(
         $: {
           backgroundColor: token.HarborBg,
           height: token.HarborHeight ?? "70px",
+          position: token.HarborPosition ?? "relative",
+          zIndex: token.HarborZIndex,
+          fontSize: "0px",
+          whiteSpace: "nowrap",
+          width: "100%",
+          top: token.HarborTop,
+          left: token.HarborLeft,
         },
 
-        "#naval": {
+        button: {
           $: {
-            position: "relative",
-            zIndex: token.HarborZIndex,
-            height: token.HarborHeight ?? "70px",
-            fontSize: "0px",
-            whiteSpace: "nowrap",
+            border: "none",
+            background: "none",
           },
-          button: {
-            $: {
-              border: "none",
-              background: "none",
-            },
+        },
+        a: {
+          $: {
+            textDecoration: "none",
           },
-          a: {
-            $: {
-              textDecoration: "none",
-            },
-          },
-          ".ship": {
-            $: {
-              display: "grid",
-              gridTemplateRows: token.HarborHeight ?? "70px",
-              gridTemplateColumns: token.HarborShipColumns ?? "min-content auto auto",
-            },
+        },
+        ".ship": {
+          $: {
+            display: "grid",
+            gridTemplateRows: token.HarborHeight ?? "70px",
+            gridTemplateColumns: token.HarborShipColumns ?? "min-content auto auto",
           },
         },
 
@@ -223,39 +252,42 @@ export default function createHarborPlumet(
               height: "100%",
               fontSize: "1rem",
             },
+
+            "&:link, &:visited": {
+              $: {
+                color: token.HarborBannerBCl ?? "var(--cl-4)",
+              },
+            },
+
             div: {
               $: {
                 display: "flex",
                 flexWrap: "wrap",
                 padding: token.HarborBannerDivPadding ?? ".75rem",
               },
-              b: {
-                $: {
-                  width: "100%",
-                  color: token.HarborBannerBCl ?? "var(--cl-4)",
-                  fontWeight: token.HarborBannerBFontWeight ?? 800,
-                  fontSize: token.HarborBannerBFz ?? "1.2rem",
-                },
-              },
-              span: {
-                $: {
-                  color: token.HarborBannerSpanCl ?? "var(--cl-4)",
-                  fontWeight: token.HarborBannerSpanFontWeight ?? 400,
-                  fontSize: token.HarborBannerSpanFz ?? ".8rem",
-                  letterSpacing: "1px", //
-                },
+            },
+
+            b: {
+              $: {
+                width: "100%",
+                color: token.HarborBannerBCl ?? "var(--cl-4)",
+                fontWeight: token.HarborBannerBFontWeight ?? 800,
+                fontSize: token.HarborBannerBFz ?? "1.2rem",
+                letterSpacing: token.HarborBannerBLetterSpacing,
               },
             },
-            svg: {
+            span: {
               $: {
-                fill: "transparent",
+                color: token.HarborBannerSpanCl ?? "var(--cl-4)",
+                fontWeight: token.HarborBannerSpanFontWeight ?? 400,
+                fontSize: token.HarborBannerSpanFz ?? ".8rem",
+                letterSpacing: token.HarborBannerSpanLetterSpacing,
               },
-              path: {
-                $: {
-                  fill: token.HarborBannerSvgFill ?? "var(--cl-4)",
-                  strokeWidth: token.HarborBannerSvgStrokeWidth ?? 4,
-                  stroke: "currentColor",
-                },
+            },
+
+            "&:hover b": {
+              $: {
+                color: token.HarborClHover ?? "var(--cl-0)",
               },
             },
           },
@@ -271,11 +303,25 @@ export default function createHarborPlumet(
             $: {
               display: "inline-flex",
               alignItems: "center",
-              transition: "color .2s",
               height: "100%",
               fontSize: "1rem",
+              transition: token.HarborTransition ?? "all .3s",
+              border: "1px #0000 solid",
+              background: "#0000",
+              letterSpacing: token.HarborBasinLetterSpacing,
               padding: token.HarborBasinButtonPadding ?? "0 1rem",
               color: token.HarborBasinCl ?? "var(--cl-4)",
+            },
+
+            "&:hover, &.active": {
+              $: {
+                color: token.HarborClHover ?? "var(--cl-0)",
+                border: token.HarborActiveBorder ?? "1px #8885 solid",
+                borderBottom: "none",
+                borderRadius: token.HarborActiveBorderRadius ?? "1rem 1rem 0 0",
+                background:
+                  token.HarborBasinActiveBackground ?? token.HarborActiveBackground ?? "#8882",
+              },
             },
           },
           a: {
@@ -285,8 +331,15 @@ export default function createHarborPlumet(
               transition: "color .2s",
               height: "100%",
               fontSize: "1rem", //
+              letterSpacing: token.HarborBasinLetterSpacing,
               padding: token.HarborBasinAnchorPadding ?? "0 1rem",
               color: token.HarborBasinCl ?? "var(--cl-4)",
+            },
+
+            "&:hover": {
+              $: {
+                color: token.HarborClHover ?? "var(--cl-0)",
+              },
             },
           },
           span: {
@@ -316,6 +369,7 @@ export default function createHarborPlumet(
           },
           "svg.chevron": {
             $: {
+              transform: "rotate(0deg)",
               transition: "transform .7s",
               height: token.HarborChevronHeight ?? "1em",
             },
@@ -350,6 +404,13 @@ export default function createHarborPlumet(
               padding: "0 .25rem",
               height: "100%",
               fontSize: "1rem",
+              color: token.HarborBasinCl ?? "var(--cl-4)",
+            },
+
+            "&:hover svg": {
+              $: {
+                stroke: token.HarborClHover ?? "var(--cl-0)",
+              },
             },
           },
         },
