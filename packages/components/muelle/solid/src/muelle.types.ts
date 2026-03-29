@@ -1,28 +1,20 @@
 /**
  * @public
- * Fundamental types for the `muelle` organ-level UI component.
+ * Public types for the `Muelle` organ (footer).
  *
- * @remarks
- * This package follows a strict Lokat-first contract: the host app owns
- * localization via an injected `@lokat/solid` instance. All props are pure,
- * deterministic inputs; the component performs no I/O, global state access,
- * or implicit side effects.
+ * Summary for integrators:
+ * - `Muelle` is a presentation-only component: pass data via props and the
+ *   component renders deterministic markup. It performs no network requests,
+ *   navigation, or global side-effects.
+ * - The root id is fixed to `muelle` to provide stable selectors for theming.
  *
- * The organ id is fixed as `muelle`. Styling hooks are provided via the
- * `class` prop; the component itself does not attach organ-named classes
- * beyond small, structural ones intended for theming.
+ * DX notes:
+ * - This file exposes small reusable interfaces (e.g. `MuelleSection`) for
+ *   composition and reuse, and a single detailed `MuelleProps` interface that
+ *   lists prop shapes inline so IDE tooltips show field names and types
+ *   without forcing developers to open separate files.
  */
-import type { SolidLokatInstance } from "@lokat/solid"
 import type { JSX } from "solid-js"
-
-/**
- * Represents high-level rendering state of the footer tail.
- *
- * - `ready`: normal content and socket are shown
- * - `loading`: skeleton placeholder is shown with `aria-busy="true"`
- * - `error`: error message area is shown with `role="alert"`
- */
-export type MuelleState = "ready" | "loading" | "error"
 
 /**
  * Branding block shown at the top banner of the footer.
@@ -88,55 +80,36 @@ export interface MuelleSocialItem {
  * @typeParam L - Locale dictionary type used by the injected Lokat instance.
  * @public
  */
-export interface MuelleProps<L = unknown> {
+export interface MuelleProps {
   /**
-   * Optional additional class name(s) applied to the root `<footer>` element.
-   *
-   * @remarks
-   * The root id is fixed to `muelle`. Pass theme classes here rather than
-   * relying on organ-named defaults.
+   * Optional additional class(es) applied to the root `<footer id="muelle">`.
    */
   class?: string
-  /** Branding block configuration. */
-  brand?: MuelleBrand
+
+  /** Branding block — expanded inline for IDE completion. */
+  brand?: {
+    /** Brand title text (optional). */
+    title?: string
+    /** Optional JSX logo node (e.g., an SVG). */
+    logo?: JSX.Element
+  }
+
   /** Optional slogan rendered alongside the brand. */
   slogan?: string
-  /** Optional list of social link items. */
-  socials?: ReadonlyArray<MuelleSocialItem>
-  /** Optional list of footer sections with links. */
-  sections?: ReadonlyArray<MuelleSection>
-  /** Tail rendering state; controls skeleton/error/ready display. */
-  state?: MuelleState
-  /**
-   * Application-owned Lokat instance for translation.
-   *
-   * @remarks
-   * The component calls `lokat.t(key)` synchronously; if no translator
-   * is present, it falls back to echoing the key.
-   */
-  lokat: SolidLokatInstance<L>
-  /**
-   * Controlled bitmask of collapsed sections.
-   *
-   * @deprecated Footer sections no longer support toggle/collapse in the
-   * default `Muelle` component. This prop is retained for backward
-   * compatibility but has no effect.
-   */
-  collapsedMask?: number
-  /**
-   * Callback when the collapsed bitmask changes.
-   *
-   * @deprecated No longer emitted because sections are always expanded.
-   */
-  onCollapsedMaskChange?: (next: number) => void
-  /**
-   * Callback when a section would have toggled.
-   *
-   * @param index - Section index
-   * @param nextCollapsed - Next collapsed state
-   * @deprecated No longer emitted because sections are always expanded.
-   */
-  onSectionToggle?: (index: number, nextCollapsed: boolean) => void
-  /** Copyright and governance text rendered in the tail when `state` is `ready`. */
+
+  /** Social links (inline shape for better IDE tooltips). */
+  socials?: ReadonlyArray<{
+    name: string
+    href: string
+    icon?: JSX.Element
+  }>
+
+  /** Footer sections with inline link items for quick discovery. */
+  sections?: ReadonlyArray<{
+    title: string
+    items: ReadonlyArray<{ label: string; href: string }>
+  }>
+
+  /** Small copyright/governance content rendered in the footer tail. */
   socket?: string | JSX.Element
 }

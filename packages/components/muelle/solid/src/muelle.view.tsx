@@ -4,9 +4,7 @@
  *
  * @remarks
  * The component renders a structured footer with brand, optional slogan,
- * socials, sections, and a tail area reflecting `state` (ready/loading/error).
- * It is localization-first: translation is provided via an injected
- * `@lokat/solid` instance; the component itself performs no async work.
+ * socials, sections, and a socket for copyright or governance content.
  *
  * Accessibility:
  * - Social links include `aria-label` derived from their `name`.
@@ -17,42 +15,21 @@
  */
 /** @jsxImportSource solid-js */
 import { For, type JSX, Show } from "solid-js"
-import { resolveT } from "./muelle.logic"
 import type { MuelleProps } from "./muelle.types"
 
 /**
  * Renders the `Muelle` footer.
  *
- * @typeParam L - Locale dictionary type for the Lokat instance.
  * @param props - Component props; see `MuelleProps`
  * @returns A Solid JSX element representing the footer structure
  *
- * @example
- * ```tsx
- * import { createLokat } from "@lokat/solid"
- * import Muelle from "@nazahex/muelle/solid"
- *
- * const lokat = createLokat({ initialDict: { loading: "Loading", error: "Error" } })
- *
- * <Muelle
- *   lokat={lokat}
- *   brand={{ title: "Kazaura" }}
- *   slogan="Build fast, ship solid"
- *   socials={[{ name: "GitHub", href: "https://github.com" }]}
- *   sections={[{ title: "Docs", items: [{ label: "Getting Started", href: "/docs" }] }]}
- *   state="ready"
- *   socket="© 2025 Nazahex"
- * />
- * ```
  */
-export default function Muelle<L = unknown>(props: MuelleProps<L>): JSX.Element {
-  const t = resolveT(props)
-
+export default function Muelle(props: MuelleProps): JSX.Element {
   return (
     <footer id="muelle" class={props.class}>
       <div class="ship">
         <div class="banner">
-          <Show when={props.brand?.logo} fallback={<h2>{props.brand?.title ?? t("brand")}</h2>}>
+          <Show when={props.brand?.logo} fallback={<h2>{props.brand?.title}</h2>}>
             {(logo) => <div class="logo">{logo()}</div>}
           </Show>
           <Show when={props.slogan}>{(s) => <div class="slogan">{s()}</div>}</Show>
@@ -93,21 +70,7 @@ export default function Muelle<L = unknown>(props: MuelleProps<L>): JSX.Element 
         </Show>
       </div>
 
-      <div class="tail">
-        <Show when={props.state === "loading"}>
-          <div class="skeleton" aria-busy="true">
-            {t("loading")}
-          </div>
-        </Show>
-        <Show when={props.state === "error"}>
-          <div class="error" role="alert">
-            {t("error")}
-          </div>
-        </Show>
-        <Show when={props.state === "ready" || !props.state}>
-          <div class="socket">{props.socket}</div>
-        </Show>
-      </div>
+      <div class="socket">{props.socket}</div>
     </footer>
   )
 }
